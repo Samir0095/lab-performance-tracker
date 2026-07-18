@@ -1,4 +1,5 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
+import { Star } from "lucide-react";
 
 export const StudentRow = forwardRef(function StudentRow(
   {
@@ -13,6 +14,8 @@ export const StudentRow = forwardRef(function StudentRow(
   },
   ref
 ) {
+  const [hoverValue, setHoverValue] = useState(null);
+
   const handleChange = (e) => {
     let value = e.target.value;
 
@@ -29,6 +32,14 @@ export const StudentRow = forwardRef(function StudentRow(
     onMarkChange?.(studentId, num);
   };
 
+  const handleStarClick = (starValue) => {
+    if (Number(value) === starValue) {
+      onMarkChange?.(studentId, ""); // Toggle off if clicking the already selected star
+    } else {
+      onMarkChange?.(studentId, starValue);
+    }
+  };
+
   return (
     <div className="grid grid-cols-[1fr_1fr_1fr] gap-3">
       <div className="bg-white rounded-md px-4 py-2 text-sm font-medium text-gray-600 shadow-sm border">
@@ -39,16 +50,37 @@ export const StudentRow = forwardRef(function StudentRow(
         {roll}
       </div>
 
-      <div className="bg-white rounded-md px-4 py-2 shadow-sm border flex items-center">
+      <div className="bg-white rounded-md px-4 py-2 shadow-sm border flex items-center min-h-[38px]">
         {markingType === "star" ? (
-          Array.from({ length: scale }).map((_, i) => (
-            <span
-              key={i}
-              className="cursor-pointer text-gray-300 hover:text-yellow-400"
-            >
-              ★
-            </span>
-          ))
+          <div 
+            className="flex items-center gap-0.5"
+            onMouseLeave={() => setHoverValue(null)}
+          >
+            {Array.from({ length: scale }).map((_, i) => {
+              const starValue = i + 1;
+              const isFilled = hoverValue !== null 
+                ? starValue <= hoverValue 
+                : starValue <= Number(value);
+
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => handleStarClick(starValue)}
+                  onMouseEnter={() => setHoverValue(starValue)}
+                  className="focus:outline-none transition-transform duration-100 hover:scale-110 active:scale-90"
+                >
+                  <Star
+                    className={`h-5 w-5 transition-all duration-150 ${
+                      isFilled
+                        ? "fill-amber-400 text-amber-500"
+                        : "fill-transparent text-gray-300 hover:text-amber-400"
+                    }`}
+                  />
+                </button>
+              );
+            })}
+          </div>
         ) : (
           <input
             ref={ref}

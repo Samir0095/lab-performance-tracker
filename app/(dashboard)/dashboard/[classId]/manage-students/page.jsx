@@ -13,20 +13,21 @@ export default function ManageStudentsPage() {
   const [roll, setRoll] = useState("");
   const [name, setName] = useState("");
   const [group, setGroup] = useState("1st 30");
-
-  async function loadStudents() {
-    const { data } = await supabase
-      .from("students")
-      .select("*")
-      .eq("class_id", classId)
-      .order("serial_no");
-
-    setStudents(data || []);
-  }
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
+    async function loadStudents() {
+      const { data } = await supabase
+        .from("students")
+        .select("*")
+        .eq("class_id", classId)
+        .order("serial_no");
+
+      setStudents(data || []);
+    }
+
     loadStudents();
-  }, []);
+  }, [classId, refreshTrigger]);
 
   async function addStudent(e) {
     e.preventDefault();
@@ -51,18 +52,23 @@ export default function ManageStudentsPage() {
     setName("");
     setGroup("1st 30");
 
-    loadStudents();
+    setRefreshTrigger((prev) => prev + 1);
   }
 
   async function deleteStudent(id) {
     if (!confirm("Delete this student?")) return;
 
-    await supabase
+    const { error } = await supabase
       .from("students")
       .delete()
       .eq("id", id);
 
-    loadStudents();
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    setRefreshTrigger((prev) => prev + 1);
   }
 
   return (

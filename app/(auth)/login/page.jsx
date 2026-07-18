@@ -24,7 +24,7 @@ export default function LoginPage() {
       setError(error.message);
     } else {
       router.push("/dashboard");
-    }
+    }  
   };
 
   return (

@@ -13,7 +13,7 @@ export default function DashboardPage() {
 
   const [group, setGroup] = useState("1st 30");
   const [labNo, setLabNo] = useState(1);
-  const [labDate, setLabDate] = useState("");
+  const [labDate, setLabDate] = useState(() => new Date().toISOString().split("T")[0]);
 
   const [markingType, setMarkingType] = useState("star");
   const [scale, setScale] = useState(5);
@@ -21,60 +21,56 @@ export default function DashboardPage() {
   const inputRefs = useRef([]);
 
   useEffect(() => {
-    setLabDate(new Date().toISOString().split("T")[0]);
-  }, []);
+    async function loadData() {
+      // Load students
 
-  useEffect(() => {
-    loadData();
-  }, [classId, group, labNo]);
-
-  async function loadData() {
-    // Load students
-
-    const { data: studentData } = await supabase
-      .from("students")
-      .select("*")
-      .eq("class_id", classId)
-      .eq("group_name", group)
-      .order("serial_no");
-
-    setStudents(studentData || []);
-
-    let temp = {};
-
-    (studentData || []).forEach((student) => {
-      temp[student.id] = "";
-    });
-
-    // Find lab
-
-    const { data: lab } = await supabase
-      .from("labs")
-      .select("*")
-      .eq("class_id", Number(classId))
-      .eq("lab_number", labNo)
-      .eq("group_name", group)
-      .maybeSingle();
-
-    if (lab) {
-      setLabDate(lab.lab_date);
-      setMarkingType(lab.marking_type);
-      setScale(lab.scale);
-
-      // Load saved marks
-
-      const { data: markData } = await supabase
-        .from("marks")
+      const { data: studentData } = await supabase
+        .from("students")
         .select("*")
-        .eq("lab_id", lab.id);
+        .eq("class_id", classId)
+        .eq("group_name", group)
+        .order("serial_no");
 
-      markData?.forEach((m) => {
-        temp[m.student_id] = m.score;
+      setStudents(studentData || []);
+
+      let temp = {};
+
+      (studentData || []).forEach((student) => {
+        temp[student.id] = "";
       });
+
+      // Find lab
+
+      const { data: lab } = await supabase
+        .from("labs")
+        .select("*")
+        .eq("class_id", Number(classId))
+        .eq("lab_number", labNo)
+        .eq("group_name", group)
+        .maybeSingle();
+
+      if (lab) {
+        setLabDate(lab.lab_date);
+        setMarkingType(lab.marking_type);
+        setScale(lab.scale);
+
+        // Load saved marks
+
+        const { data: markData } = await supabase
+          .from("marks")
+          .select("*")
+          .eq("lab_id", lab.id);
+
+        markData?.forEach((m) => {
+          temp[m.student_id] = m.score;
+        });
+      }
+
+      setMarks(temp);
     }
 
-    setMarks(temp);
-  }
+    loadData();
+  }, [classId, group, labNo]);
 
   function handleMarkChange(studentId, value) {
     setMarks((prev) => ({

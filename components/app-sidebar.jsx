@@ -32,42 +32,42 @@ export function AppSidebar(props) {
   const [teacher, setTeacher] = React.useState(null);
 
   React.useEffect(() => {
+    async function loadSidebar() {
+      // Get logged in user
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      // Get teacher profile
+      const { data: teacherData } = await supabase
+        .from("teachers")
+        .select("*")
+        .eq("auth_id", user.id)
+        .single();
+
+      setTeacher(teacherData);
+
+      // Get classes
+      const { data: classData } = await supabase
+        .from("classes")
+        .select("*")
+        .eq("teacher_id", user.id)
+        .order("code");
+
+      const classItems =
+        classData?.map((c) => ({
+          id: c.id,
+          title: c.code,
+          subtitle: c.title,
+        })) || [];
+
+      setCourses(classItems);
+    }
+
     loadSidebar();
   }, []);
-
-  async function loadSidebar() {
-    // Get logged in user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) return;
-
-    // Get teacher profile
-    const { data: teacherData } = await supabase
-      .from("teachers")
-      .select("*")
-      .eq("auth_id", user.id)
-      .single();
-
-    setTeacher(teacherData);
-
-    // Get classes
-    const { data: classData } = await supabase
-      .from("classes")
-      .select("*")
-      .eq("teacher_id", user.id)
-      .order("code");
-
-    const classItems =
-      classData?.map((c) => ({
-        id: c.id,
-        title: c.code,
-        subtitle: c.title,
-      })) || [];
-
-    setCourses(classItems);
-  }
 
   const navMain = [
     {
