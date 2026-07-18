@@ -30,11 +30,11 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="flex items-center justify-between px-6 h-20 bg-[#D0D9F3]">
+    <header className="flex items-center justify-between px-4 sm:px-6 h-20 bg-[#D0D9F3]">
       <div className="flex items-center gap-3">
         <SidebarTrigger className="[&>svg]:!size-6" />
 
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-lg sm:text-2xl font-bold">
           <span className="text-black">LAB </span>
           <span className="text-indigo-600">Performance </span>
           <span className="text-black">Tracker</span>

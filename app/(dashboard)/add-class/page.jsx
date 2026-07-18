@@ -48,10 +48,10 @@ export default function AddClassPage() {
   }
 
   return (
-    <div className="flex justify-center p-8">
+    <div className="flex justify-center p-4 sm:p-8">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow p-8 w-full max-w-lg"
+        className="bg-white rounded-xl shadow p-6 sm:p-8 w-full max-w-lg"
       >
         <h1 className="text-3xl font-bold mb-8">
           Add New Class

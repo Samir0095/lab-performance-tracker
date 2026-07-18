@@ -72,9 +72,9 @@ export default function ManageStudentsPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
 
-      <div className="bg-white rounded-xl shadow p-6">
+      <div className="bg-white rounded-xl shadow p-4 sm:p-6">
 
         <h1 className="text-3xl font-bold mb-6">
           Manage Students
@@ -82,7 +82,7 @@ export default function ManageStudentsPage() {
 
         <form
           onSubmit={addStudent}
-          className="grid grid-cols-5 gap-3 mb-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-8"
         >
 
           <input
@@ -127,54 +127,56 @@ export default function ManageStudentsPage() {
 
         </form>
 
-        <table className="w-full">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[500px]">
 
-          <thead>
+            <thead>
 
-            <tr className="border-b">
+              <tr className="border-b">
 
-              <th className="text-left p-2">Serial</th>
-              <th className="text-left p-2">Roll</th>
-              <th className="text-left p-2">Name</th>
-              <th className="text-left p-2">Group</th>
-              <th className="text-left p-2">Action</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            {students.map((student) => (
-
-              <tr
-                key={student.id}
-                className="border-b"
-              >
-
-                <td className="p-2">{student.serial_no}</td>
-                <td className="p-2">{student.roll}</td>
-                <td className="p-2">{student.name}</td>
-                <td className="p-2">{student.group_name}</td>
-
-                <td className="p-2">
-
-                  <button
-                    onClick={() => deleteStudent(student.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
-
-                </td>
+                <th className="text-left p-2">Serial</th>
+                <th className="text-left p-2">Roll</th>
+                <th className="text-left p-2">Name</th>
+                <th className="text-left p-2">Group</th>
+                <th className="text-left p-2">Action</th>
 
               </tr>
 
-            ))}
+            </thead>
 
-          </tbody>
+            <tbody>
 
-        </table>
+              {students.map((student) => (
+
+                <tr
+                  key={student.id}
+                  className="border-b"
+                >
+
+                  <td className="p-2">{student.serial_no}</td>
+                  <td className="p-2">{student.roll}</td>
+                  <td className="p-2">{student.name}</td>
+                  <td className="p-2">{student.group_name}</td>
+
+                  <td className="p-2">
+
+                    <button
+                      onClick={() => deleteStudent(student.id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded cursor-pointer"
+                    >
+                      Delete
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+        </div>
 
       </div>
 

@@ -41,16 +41,16 @@ export const StudentRow = forwardRef(function StudentRow(
   };
 
   return (
-    <div className="grid grid-cols-[1fr_1fr_1fr] gap-3">
-      <div className="bg-white rounded-md px-4 py-2 text-sm font-medium text-gray-600 shadow-sm border">
+    <div className="grid grid-cols-[1.4fr_1fr_1.1fr] sm:grid-cols-[1.5fr_1fr_1fr] gap-1.5 sm:gap-3">
+      <div className="bg-white rounded-md px-2.5 sm:px-4 py-1.5 sm:py-2 text-sm font-medium text-gray-600 shadow-sm border truncate">
         {name}
       </div>
 
-      <div className="bg-white rounded-md px-4 py-2 text-sm font-medium text-gray-600 shadow-sm border">
+      <div className="bg-white rounded-md px-2.5 sm:px-4 py-1.5 sm:py-2 text-sm font-medium text-gray-600 shadow-sm border truncate">
         {roll}
       </div>
 
-      <div className="bg-white rounded-md px-4 py-2 shadow-sm border flex items-center min-h-[38px]">
+      <div className="bg-white rounded-md px-2.5 sm:px-4 py-1.5 sm:py-2 shadow-sm border flex items-center min-h-[34px] sm:min-h-[38px]">
         {markingType === "star" ? (
           <div 
             className="flex items-center gap-0.5"

@@ -239,8 +239,8 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="px-6 pb-6">
-      <div className="bg-white rounded-xl shadow-sm p-6">
+    <div className="px-3 sm:px-6 pb-6">
+      <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
         {course && (
           <div className="mb-6 pb-4 border-b">
             <h2 className="text-xl font-bold text-indigo-700">{course.code}</h2>
@@ -341,7 +341,7 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
 
           <div className="flex flex-col gap-3">
             {leftColumn.map((s, i) => (
