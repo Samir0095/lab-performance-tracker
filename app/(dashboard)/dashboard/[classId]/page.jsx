@@ -132,7 +132,7 @@ export default function DashboardPage() {
 
     const { error } = await supabase
       .from("marks")
-      .upsert(rows);
+      .upsert(rows, { onConflict: "lab_id,student_id" });
 
     if (error) {
       alert(error.message);
